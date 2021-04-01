@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <!-- <link rel="stylesheet/less" type="text/css" href="styles.less" /> -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Share+Tech+Mono"
+    />
+    <style>
+      .row {
+        /* width: 100%; */
+      }
+      .jumbo {
+        width: 160px;
+      }
+      .equalsStyle {
+        background: #004466;
+        position: absolute;
+        height: 130px;
+        bottom: 5px;
+      }
+      .operatorStyle {
+        background: #666666;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="calculator">
+        <div class="formulaScreen" value="0"></div>
+        <div class="outputScreen" value="0">0</div>
+        <div class="row">
+          <button
+            class="jumbo"
+            style="background: #ac3939"
+            value="AC"
+            data-action="clear"
+            name="clear"
+          >
+            AC
+          </button>
+          <button
+            class="operatorStyle"
+            value="/"
+            data-action="divide"
+            name="operator"
+          >
+            /
+          </button>
+          <button
+            class="operatorStyle"
+            value="*"
+            data-action="multiply"
+            name="operator"
+          >
+            x
+          </button>
+          <button class="" value="7" name="number">7</button>
+          <button class="" value="8" name="number">8</button>
+          <button class="" value="9" name="number">9</button>
+          <button
+            class="operatorStyle"
+            value="-"
+            data-action="subtract"
+            name="operator"
+          >
+            -
+          </button>
+          <button class="" value="4" name="number">4</button>
+          <button class="" value="5" name="number">5</button>
+          <button class="" value="6" name="number">6</button>
+          <button
+            class="operatorStyle"
+            value="+"
+            data-action="add"
+            name="operator"
+          >
+            +
+          </button>
+          <button class="" value="1" name="number">1</button>
+          <button class="" value="2" name="number">2</button>
+          <button class="" value="3" name="number">3</button>
+          <button class="jumbo" value="0" name="zero">0</button>
+          <button class="" value="." data-action="decimal" name="decimal">
+            .
+          </button>
+          <button
+            class="equalsStyle"
+            value="="
+            data-action="calculate"
+            name="equal"
+          >
+            =
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="js/calc_try_2.js?/1.0"></script>
+</html>
