@@ -1,88 +1,117 @@
-"use strict";
-var lastClicked = "";
+var g_arr = [];
+var g_operator = "";
 
-var operatorKeys = ["+", "-", "*", "/"];
-var numberKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-var decimalKey = ["."];
-var equalKey = ["="];
-var clearKey = ["AC"];
+var collectedArr = [];
+var decimalCount = 0;
+var thisNum = [];
+$(document).ready(function () {
+  $("button").on("click", function () {
+    getCalculatorWork($(this));
+
+    if (
+      ($(this).attr("name") == "number") |
+      ($(this).attr("name") == "zero") |
+      ($(this).attr("name") == "decimal") |
+      ($(this).attr("name") == "operator")
+    ) {
+      thisNum.push($(this).val());
+      $(".outputScreen").html(thisNum.join(""));
+    }
+  });
+});
+
+function getCalculatorWork(thisObj) {
+  var collectedOperator = "";
+
+  var curBtnName = thisObj.attr("name");
+  var currentClickedButton = "";
+  currentClickedButton = thisObj.val();
+  if (
+    (collectedArr.length == 0) &
+    ((curBtnName == "zero") | (curBtnName == "decimal"))
+  ) {
+    // cannot take multiple zeros and decimals at beginning
+    return;
+  }
+  if (curBtnName == "decimal") {
+    if (collectedArr.includes(".")) {
+      // no multiple decimals in a set of number
+      return;
+    }
+  }
+
+  if (
+    (curBtnName == "number") |
+    (curBtnName == "zero") |
+    (curBtnName == "decimal")
+  ) {
+    // take numbers , zeros, decimals
+    collectedArr.push(currentClickedButton);
+  }
+
+  // console.log(collectedArr);
+
+  if (curBtnName == "operator") {
+    collectedOperator = currentClickedButton;
+
+    if (collectedArr.length > 0) {
+      var myNum = collectedArr.join("");
+      g_arr.push(myNum);
+      collectedArr = [];
+    }
+    g_arr.push(collectedOperator);
+  }
+
+  //console.log(g_arr);
+  // console.log(collectedOperator);
+
+  if (curBtnName == "clear") {
+    // clear when AC btn clicked
+    initialize();
+  }
+  if (curBtnName == "equal") {
+    // give result when = is clicked
+    if (collectedArr.length > 0) {
+      var myNum = collectedArr.join("");
+      g_arr.push(myNum);
+      collectedArr = [];
+    }
+    if (g_arr.length > 0) {
+      // console.log(g_arr);
+      var sendArr = g_arr.join("");
+      // console.log(sendArr);
+      var result = evaluate(sendArr);
+      // console.log(result);
+      $(".formulaScreen").html(sendArr + "=");
+      if (result.toString().length > 11) {
+        $(".outputScreen").html(result.toFixed(11));
+      } else {
+        $(".outputScreen").html(result);
+      }
+    }
+  }
+}
 
 function initialize() {
-  arr = [];
-  formula = "";
-  result = "";
-  $(".formulaScreen").html(formula);
+  collectedArr = [];
+  decimalCount = 0;
+  g_arr = [];
+  g_operator = "";
+  thisNum = [];
+  ///  result = "";
+  $(".formulaScreen").html("");
   $(".outputScreen").html("0");
 }
 
-function evaluate() {
+function evaluate(formula) {
   var result = eval(formula);
   return result;
 }
 
-function nullToString(str) {
-  if ((str == null) | (str == undefined)) {
-    str = "";
-  }
-
-  return str.toString();
+function isFloat(n) {
+  return n === +n && n !== (n | 0);
 }
 
-function nullTozero(str) {
-  if ((str == "") | (str == null) | (str == undefined) | (str == Infinity)) {
-    str = 0;
-  }
-
-  return parseFloat(str);
+function isInteger(n) {
+  return n === +n && n === (n | 0);
 }
-
-var arr = [];
-var formula = "";
-var result = "";
-
-var countDecimal = 0;
-$(document).ready(function () {
-  $("button").on("click", function () {
-    var curBtnName = $(this).attr("name");
-    var currentClickedButton = "";
-    currentClickedButton = $(this).val();
-
-    if (curBtnName == "decimal") {
-      countDecimal++;
-      if (countDecimal <= 1) {
-        arr.push(currentClickedButton);
-      }
-    }
-
-    if (
-      (curBtnName == "zero") |
-      (curBtnName == "number") //|
-      // (curBtnName == "operator")
-    ) {
-      arr.push(currentClickedButton);
-    }
-    if ((arr[0] == "0") | (arr[0] == ".")) {
-      // arr shouldnot start with zero or decimal
-      arr = [];
-    }
-    if (curBtnName == "operator") {
-      if (arr[arr.length - 1] == currentClickedButton) {
-        console.log(arr[arr.length - 1]);
-        console.log(currentClickedButton);
-      }
-    }
-    console.log(arr);
-    formula = arr.join("");
-    console.log(formula);
-    $(".formulaScreen").html(formula);
-
-    if (currentClickedButton == "AC") {
-      initialize();
-    }
-    if (currentClickedButton == "=") {
-      result = evaluate();
-      $(".formulaScreen").html(formula + "=");
-      $(".outputScreen").html(result);
-    }
-  });
-});
